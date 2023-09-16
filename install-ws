@@ -80,9 +80,4 @@ echo    "GET / HTTP/1.1[crlf]Host: Dominio[crlf]Upgrade: websocket[crlf][crlf]"
 echo    "---------------------------------------"
 echo -e "${NC}"
 rm -rf install-ws && cat /dev/null > ~/.bash_history && history -c
-echo -e "\033[01;31m\033[1;33mPARA INICIAR DIGITE: \033[1;32mmenu\033[0m" 
-read
-menu
-   
-fi
-
+echo -e "${NC}"
