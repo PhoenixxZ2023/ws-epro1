@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 pkill -f ws-epro
-echo INSTALANDO NOVO WS-EPRO
+echo INSTALANDO UTILITÁRIOS 
 sleep 1
 cd
 
@@ -19,10 +19,10 @@ chmod +x /usr/bin/ws-port
 
 #seting port
 clear
-echo SELECIONE PORTAS
+echo SELECIONE AS PORTAS
 sleep 1
 read -p "PORTA LOCAL : " openssh
-read -p "PORTA PHYTON : " wsopenssh
+read -p "PORTA PYTHON: " wsopenssh
 WS_DIR=/usr/local/etc/ws-epro
 if [ -d "$WS_DIR" ]; then # if it exists,delete it.
     rm -rf "$WS_DIR"
@@ -67,7 +67,7 @@ echo    "Creditos A : @TURBONET2023"
 echo    "════💙🧑🏽‍💻EDITADO POR THEFATHER12🧑🏽‍💻💙════"
 echo    "╔════════════════════╗"
 echo    "   Porta Local SSH: $openssh"
-echo    "   Porta Phyton: $wsopenssh"
+echo    "   Porta Python: $wsopenssh"
 echo    "╚════════════════════╝"
 echo    ""
 echo    "WEBSOCKET SEM SER UM PLANO PRO CLOUDFLARE"
@@ -80,4 +80,3 @@ echo    "GET / HTTP/1.1[crlf]Host: Dominio[crlf]Upgrade: websocket[crlf][crlf]"
 echo    "---------------------------------------"
 echo -e "${NC}"
 rm -rf install-ws && cat /dev/null > ~/.bash_history && history -c
-echo -e "${NC}"
