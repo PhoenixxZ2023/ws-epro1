@@ -140,13 +140,13 @@ while true; do
         ;;
     3 | 03)
         echo "Serviços em execução:"
-        systemctl list-units --type=service --state=running | grep epro-ws-
+        systemctl list-units --type=service --state=running | grep epro-ws
         read -p "QUAL PORTA DESEJA REINICIAR?: " service_number
         systemctl restart epro-ws-$service_number
         echo "Serviço epro-ws-$service_number reiniciado."
         ;;
     4 | 04)
-        systemctl list-units --type=service --state=running | grep epro-ws-
+        systemctl list-units --type=service --state=running | grep epro-ws
         ;;
     5 | 05)
         echo "Desinstalando o epro-ws antes de reinstalar..."
