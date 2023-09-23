@@ -1,9 +1,13 @@
 ~~~~
- wget https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro/main/install-ws; chmod +x install-ws; ./install-ws
+{
+curl -s -o install.sh -L https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro1/main/install.sh
+chmod +x install.sh
+./install.sh && mainproxy
+}
 ~~~~ 
 
 ~~~~
-bash <(curl -sL https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro/main/install-ws)
+bash <(curl -sL https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro1/main/install-ws)
 ~~~~
 
 ~~~~
