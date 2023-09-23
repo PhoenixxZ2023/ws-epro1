@@ -1,30 +1,30 @@
 #!/bin/bash
 
 # Verificar se o proxy já está instalado
-if [ -f /usr/bin/proxy ]; then
+if [ -f /usr/bin/epro-ws ]; then
     echo "O proxy já está instalado. Ignorando a instalação."
 else
 # Função para instalar o proxy
     install_proxy() {
         echo "Instalando o proxy..."
         {
-            rm -f /usr/bin/proxy
-            curl -s -L -o /usr/bin/proxy https://raw.githubusercontent.com/PhoenixxZ2023/proxy/main/proxy
-            chmod +x /usr/bin/proxy
+            rm -f /usr/bin/epro-ws
+            curl -s -L -o /usr/bin/proxy https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro1/main/epro-ws
+            chmod +x /usr/bin/epro-ws
         } > /dev/null 2>&1
-        echo "Proxy instalado com sucesso."
+        echo "WS-EPRO instalado com sucesso."
     }
     
 # Instalar o proxy
-    install_proxy
+    install_epro-ws
 fi
 
 
 uninstall_proxy() {
-    echo -e "\nDesinstalando o proxy..."
+    echo -e "\nDesinstalando o epro-ws..."
     
 # Encontra e remove todos os arquivos de serviço do proxy
-    service_files=$(find /etc/systemd/system -name 'proxy-*.service')
+    service_files=$(find /etc/systemd/system -name 'epro-ws-*.service')
     for service_file in $service_files; do
         service_name=$(basename "$service_file")
         service_name=${service_name%.service}
@@ -40,7 +40,7 @@ uninstall_proxy() {
     done
     
  # Remove o arquivo binário do proxy
-    rm -f /usr/bin/proxy
+    rm -f /usr/bin/epro-ws
     
     echo "Proxy desinstalado com sucesso."
 }
@@ -52,7 +52,7 @@ uninstall_proxy() {
     if [[ $HTTP_OR_HTTPS == "S" || $HTTP_OR_HTTPS == "s" ]]; then
     read -p "Digite o caminho do certificado (--cert): " CERT_PATH
     fi
-    read -p "DIGITE STATUS DO PROXY: " RESPONSE
+    read -p "DIGITE STATUS DO WS-EPRO: " RESPONSE
     read -p "Você quer usar apenas SSH (Y/N)?: " SSH_ONLY
     
 # Defina as opções de comando
@@ -69,16 +69,16 @@ uninstall_proxy() {
     fi
     
  # Crie o arquivo de serviço
-    SERVICE_FILE="/etc/systemd/system/proxy-$PORT.service"
+    SERVICE_FILE="/etc/systemd/system/epro-ws-$PORT.service"
     echo "[Unit]" > "$SERVICE_FILE"
-    echo "Description=PROXY ATIVO NA PORTA $PORT" >> "$SERVICE_FILE"
+    echo "Description=WS-EPRO ATIVO NA PORTA $PORT" >> "$SERVICE_FILE"
     echo "After=network.target" >> "$SERVICE_FILE"
     echo "" >> "$SERVICE_FILE"
     echo "[Service]" >> "$SERVICE_FILE"
     echo "Type=simple" >> "$SERVICE_FILE"
     echo "User=root" >> "$SERVICE_FILE"
     echo "WorkingDirectory=/root" >> "$SERVICE_FILE"
-    echo "ExecStart=/usr/bin/proxy $OPTIONS --buffer-size 2048 --workers 5000 --response $RESPONSE" >> "$SERVICE_FILE" 
+    echo "ExecStart=/usr/bin/epro-ws $OPTIONS --buffer-size 2048 --workers 5000 --response $RESPONSE" >> "$SERVICE_FILE" 
     
 # Parâmetro --response no final
     echo "Restart=always" >> "$SERVICE_FILE"
@@ -90,8 +90,8 @@ uninstall_proxy() {
     systemctl daemon-reload
     
 # Inicie o serviço e configure o início automático
-    systemctl start proxy-$PORT
-    systemctl enable proxy-$PORT
+    systemctl start epro-ws-$PORT
+    systemctl enable epro-ws-$PORT
     
     echo "O serviço do proxy na porta $PORT foi configurado e iniciado automaticamente."
 }
@@ -100,48 +100,33 @@ stop_and_remove_service() {
     read -p "QUE PORTA DESEJA PARAR?: " service_number
     
  # Parar o serviço
-    systemctl stop proxy-$service_number
+    systemctl stop epro-ws-$service_number
     
 # Desabilitar o serviço
-    systemctl disable proxy-$service_number
+    systemctl disable epro-ws-$service_number
     
 # Encontrar e remover o arquivo do serviço
-    service_file=$(find /etc/systemd/system -name "proxy-$service_number.service")
+    service_file=$(find /etc/systemd/system -name "epro-ws-$service_number.service")
     if [ -f "$service_file" ]; then
         rm "$service_file"
         echo "PORTA REMOVIDA COM SUCESSO: $service_file"
     else
-        echo "Arquivo de serviço não encontrado para o serviço proxy-$service_number."
+        echo "Arquivo de serviço não encontrado para o serviço epro-ws-$service_number."
     fi
     
     echo "PORTA PROXY-$service_number parado e removido."
 }
 
-# Criar link simbólico para o script do menu
-SCRIPT_PATH=$(realpath "$0")
-SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
-LINK_NAME="/usr/local/bin/mainproxy"
-
-if [[ ! -f "$LINK_NAME" ]]; then
-    ln -s "$SCRIPT_PATH" "$LINK_NAME"
-    echo "Link simbólico 'mainproxy' criado. Você pode executar o menu usando 'mainproxy'."
-else
-    echo "Link simbólico 'mainproxy' já existe."
-fi
-
-
-
-
 # Menu de gerenciamento
 while true; do
     clear
-    echo -e "\E[41;1;37m       🚀   TURBONET PROXY MOD  🚀           \E[0m"
+    echo -e "\E[41;1;37m       🚀   TURBONET WS-EPRO  🚀           \E[0m"
               echo ""
-    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mINSTALAR TURBONET PROXY MOD \033[0m"
+    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mINSTALAR TURBONET WS-EPRO \033[0m"
     echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m• \033[1;33mPARAR E REMOVER PORTA \033[0m"
-    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mREINICIAR PROXY \033[0m"
-    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m4\033[1;31m] \033[1;37m• \033[1;33mVER STATUS DO PROXY \033[0m"
-    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m5\033[1;31m] \033[1;37m• \033[1;33mREINSTALAR PROXY \033[0m"
+    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mREINICIAR WS-EPRO \033[0m"
+    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m4\033[1;31m] \033[1;37m• \033[1;33mVER STATUS DO WS-EPRO \033[0m"
+    echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m5\033[1;31m] \033[1;37m• \033[1;33mREINSTALAR WS-EPRO \033[0m"
     echo -e "\033[01;31m║\033[0m\033[1;31m[\033[1;36m6\033[1;31m] \033[1;37m• \033[1;33mSAIR \033[0m"
     echo ""
     echo -ne "\033[1;31m➤ \033[1;32mESCOLHA OPÇÃO DESEJADA\033[1;33m\033[1;31m\033[1;37m"
@@ -155,18 +140,18 @@ while true; do
         ;;
     3 | 03)
         echo "Serviços em execução:"
-        systemctl list-units --type=service --state=running | grep proxy-
+        systemctl list-units --type=service --state=running | grep epro-ws-
         read -p "QUAL PORTA DESEJA REINICIAR?: " service_number
-        systemctl restart proxy-$service_number
-        echo "Serviço proxy-$service_number reiniciado."
+        systemctl restart epro-ws-$service_number
+        echo "Serviço epro-ws-$service_number reiniciado."
         ;;
     4 | 04)
-        systemctl list-units --type=service --state=running | grep proxy-
+        systemctl list-units --type=service --state=running | grep epro-ws-
         ;;
     5 | 05)
-        echo "Desinstalando o proxy antes de reinstalar..."
-        uninstall_proxy
-        install_proxy
+        echo "Desinstalando o epro-ws antes de reinstalar..."
+        uninstall_epro-ws
+        install_epro-ws
         ;;
     6 | 06)
         echo "Saindo."
