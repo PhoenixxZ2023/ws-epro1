@@ -2,7 +2,7 @@
 {
 curl -s -o install.sh -L https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro1/main/install.sh
 chmod +x install.sh
-./install.sh
+./install.sh && epro-ws
 echo ""
 echo "SUPER WEBSOCKET-PRO ATIVADO"
 }
