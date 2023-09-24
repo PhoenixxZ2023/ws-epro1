@@ -5,11 +5,11 @@ if [ -f /usr/bin/epro-ws ]; then
     echo "O proxy já está instalado. Ignorando a instalação."
 else
 # Função para instalar o proxy
-    install_proxy() {
+    install_epro-ws() {
         echo "Instalando o proxy..."
         {
             rm -f /usr/bin/epro-ws
-            curl -s -L -o /usr/bin/proxy https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro1/main/epro-ws
+            curl -s -L -o /usr/bin/epro-ws https://raw.githubusercontent.com/PhoenixxZ2023/ws-epro1/main/epro-ws
             chmod +x /usr/bin/epro-ws
         } > /dev/null 2>&1
         echo "WS-EPRO instalado com sucesso."
@@ -140,13 +140,13 @@ while true; do
         ;;
     3 | 03)
         echo "Serviços em execução:"
-        systemctl list-units --type=service --state=running | grep epro-ws
+        systemctl list-units --type=service --state=running | grep epro-ws-
         read -p "QUAL PORTA DESEJA REINICIAR?: " service_number
         systemctl restart epro-ws-$service_number
         echo "Serviço epro-ws-$service_number reiniciado."
         ;;
     4 | 04)
-        systemctl list-units --type=service --state=running | grep epro-ws
+        systemctl list-units --type=service --state=running | grep epro-ws-
         ;;
     5 | 05)
         echo "Desinstalando o epro-ws antes de reinstalar..."
